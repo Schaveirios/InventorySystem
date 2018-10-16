@@ -17,7 +17,6 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'report.apps.ReportConfig',
     'transaction.apps.TransactionConfig',
@@ -61,7 +60,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'inventory.wsgi.application'
 
-
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
@@ -97,7 +96,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kuala_Lumpur'
 
 USE_I18N = True
 
@@ -117,8 +116,8 @@ STATICFILES_FINDERS = [
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = BASE_DIR
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    # BASE_DIR,
 ]
