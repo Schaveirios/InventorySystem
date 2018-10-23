@@ -1,6 +1,8 @@
 from django.shortcuts import render
+# from .forms import ImportForm
 
 def sold_item(request):
+
     return render(request, 'sold_item.html')
 
 

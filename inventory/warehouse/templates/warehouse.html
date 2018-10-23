@@ -8,6 +8,10 @@
         .row {
             margin-bottom: 10px;
         }
+
+        .card-body {
+            padding:10px;
+        }
     </style>
 
     <script>
@@ -15,9 +19,29 @@
             $("#inventory_table").DataTable();
             $("#transactions_table").DataTable();
 
+            var name="";
+            var brand="";
+            var qty="";
+            var unit="";
+            var wsp=0;
+            var srp=0;
+            var distributor="";
+
             $(".import_button").click(function(){
-                var name=$(this).siblings().first().text();
+                name=$(this).siblings().eq(0).text();
+                brand=$(this).siblings().eq(1).text();
+                unit=$(this).siblings().eq(3).text();
+                wsp=$(this).siblings().eq(4).text();
+                srp=$(this).siblings().eq(5).text();
+                distributor=$(this).siblings().eq(6).text();
+
                 $("#item_name").val(name);
+                $("#item_name2").text(name);
+                $("#item_brand").val(brand);
+                $("#item_unit").val(unit);
+                $("#item_wsp").val(wsp);
+                $("#item_srp").val(srp);
+                $("#item_distributor").val(distributor);      
             });
         });
     </script>
@@ -122,53 +146,67 @@
                     
                             <!-- Modal body -->
                             <div class="modal-body">
+                                <form>
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            Date
+                                            <!-- <input type="date" class="form-control"/> -->
+                                            {{ImportForm.date}}
+                                        </div>
+                                        <div class="col-lg-4">
+                                            Document Number
+                                            <!-- <input type="number" class="form-control" placeholder="Doc#"/> -->
+                                            {{ImportForm.documentNumber}}
+                                        </div>
+                                    </div>
 
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        Date
-                                        <input type="date" class="form-control"/>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <!-- <input id="item_name" type="text" class="form-control" placeholder="Item Name"/> -->
+                                            {{ImportForm.name}}
+                                            <div class="card">
+                                                <div id="item_name2" class="card-body">Item name</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-lg-4">
-                                        Document Number
-                                        <input type="number" class="form-control" placeholder="Doc#"/>
-                                    </div>
-                                </div>
 
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <input id="item_name" type="text" class="form-control" placeholder="Item Name"/>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <!-- <input id="item_brand" type="text" class="form-control" placeholder="Brand"/> -->
+                                            {{ImportForm.brand}}
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <!-- <input id="item_distributor" type="text" class="form-control" placeholder="Distributor"/> -->
+                                            {{ImporForm.distributor}}
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <input type="text" class="form-control" placeholder="Brand"/>
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <!-- <input id="item_wsp" type="number" class="form-control" placeholder="wholesale price"/> -->
+                                            {{ImportForm.price}}
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <!-- <input id="item_srp" type="number" class="form-control" placeholder="retail price"/> -->
+                                            {{ImportForm.retailPrice}}
+                                        </div>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <input type="text" class="form-control" placeholder="Distributor"/>
-                                    </div>
-                                </div>
 
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <input type="number" class="form-control" placeholder="wholesale price"/>
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <!-- <input id="item_qty" type="number" class="form-control" placeholder="Quantity"/> -->
+                                            {{ImportForm.quantity}}
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <!-- <select id="item_unit" class="form-control">
+                                                <option value="pcs">pcs</option>
+                                                <option value="pack">pack</option>
+                                            </select> -->
+                                            {{ImportForm.unit}}
+                                        </div>
                                     </div>
-                                    <div class="col-lg-4">
-                                        <input type="number" class="form-control" placeholder="retail price"/>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <input type="number" class="form-control" placeholder="Quantity"/>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <select class="form-control">
-                                            <option>pcs</option>
-                                            <option>pack</option>
-                                        </select>
-                                    </div>
-                                </div>
+                                </form>
 
                             </div>
                             
