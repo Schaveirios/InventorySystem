@@ -7,6 +7,6 @@ urlpatterns = [
     # path('', include('report.urls')),
     path('', include('user.urls')),
     path('', UserFormView.as_view()),
-    path('sold/', include('transaction.urls')),
+    path('', include('transaction.urls')),
     # path('', include('warehouse.urls'))
 ]
