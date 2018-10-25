@@ -46,4 +46,4 @@ class ImportForm(forms.Form):
     }))
 
     def __str__(self):
-        return 'Import Item Form'
+        return 'Import Item'

@@ -146,7 +146,7 @@
                     
                             <!-- Modal body -->
                             <div class="modal-body">
-                                <form>
+                                <form action="{% url 'warehouse:inventory' %}" method="post">
                                     {% csrf_token %}
                                     <div class="row">
                                         <div class="col-lg-4">
