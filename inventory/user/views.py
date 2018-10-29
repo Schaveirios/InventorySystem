@@ -1,8 +1,4 @@
 from django.shortcuts import render
-<<<<<<< refs/remotes/origin/registration
-
-# Create your views here.
-=======
 from user.forms import UserForm, UserProfileInfoForm
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -12,7 +8,7 @@ def index(request):
     return render(request,'login/login.html')
 @login_required
 def special(request):
-    return HttpResponse("You are logged in!")
+    return HttpResponse("You are logged in !")
 @login_required
 def user_logout(request):
     logout(request)
@@ -59,4 +55,3 @@ def user_login(request):
             return render(request, 'login/login.html', {})
     else:
         return render(request, 'login/login.html', {})
->>>>>>> local
