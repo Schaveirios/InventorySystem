@@ -8,14 +8,75 @@
         .row {
             margin-bottom: 10px;
         }
+
+        .card-body {
+            padding:10px;
+        }
+
+        .remove_item:hover {
+            color:gray;
+        }
     </style>
 
     <script>
         $("document").ready(function(){
-            $("#inventory_table").DataTable();
+            $("#sold_item_table").DataTable();
+            $("#transactions_table").DataTable();
+            $("#items_table").DataTable();
+            
+            var name="";
+            var brand="";
+            var unit;
+            var price;
+            var qty;
+            var amount=0;
+
+            $(".select_item").click(function(){
+                name = $(this).siblings().eq(0).text();
+                brand = $(this).siblings().eq(1).text();
+                unit = $(this).siblings().eq(3).text();
+                price = $(this).siblings().eq(5).text();
+
+                $("#item_name").val(name);
+                $("#item_brand").val(brand);
+                $("#item_unit").text(unit);
+                $("#item_price_tag").text(price);
+
+                $("#item_name2").text(name);
+                $("#item_brand2").text(brand);
+            });
+
+            $("#add_to_cart").click(function(){
+                qty = $("#item_qty").val();
+                if(qty==""|| qty<=0){
+                    alert("Invalid QUANTITY");
+                    return;
+                }
+                
+                if(name=="" || brand==""){
+                    alert("Please Select an Item");
+                    return;
+                }
+
+                amount+=parseFloat(price)*parseFloat(qty);
+                
+                $("#cart_table_body").append("<tr>  <td>"+name+"</td> <td>"+brand+"</td> <td>"+qty+"</td> <td>"+unit+"</td> <td>"+price+"</td> <td>"+parseFloat(price)*parseFloat(qty)+"</td> <td class='remove_item' style='text-align:center;font-size:large;font-weight:bold;'>x</td>  </tr>");
+
+                $("#total_amount").text(amount);
+
+                $(".remove_item").click(function(){
+                    amount-=parseFloat($(this).prev().text());
+                    alert(amount);
+                    $("#total_amount").text(amount);
+                    $(this).parent().remove();
+                });
+            });
+            // $(".import_button").click(function(){
+            //     var name=$(this).siblings().first().text();
+            //     $("#item_name").val(name);
+            // });
         });
     </script>
-
 {% endblock %}
 
 
@@ -24,31 +85,153 @@
 <div class="container-fluid">
 
     <div class="row">
-        <!-- Left Column -->
-        <div class="col-lg-12">
+        <div class="col-lg-9" data-target="#items_modal" data-toggle="modal">
+            <input id="item_name" type="text" style="visibility:hidden;" class="form-control" placeholder="Item name"/>
+            <div class="card">
+                <div id="item_name2" class="card-body">Item name</div>
+            </div>
+        </div>
+        <div class="col-lg-3" data-target="#items_modal" data-toggle="modal" >
+            <input id="item_brand" type="text" style="visibility:hidden;" class="form-control" placeholder="Brand"/>
+            <div class="card">
+                <div id="item_brand2" class="card-body">Brand</div>
+            </div>
+        </div>
+    </div>
 
-            <div class="row">
-                <div class="col-lg-8">
-                    <!-- <input type="text" class="form-control" style="width:100%;"/> -->
-                </div>
-                <div class="col-lg-2">
-                    <button id="import_stocks" class="btn btn-success" style="width:100%;" data-target="#import_stocks_modal" data-toggle="modal">IMPORT STOCK</button>
-                </div>
-                <div class="col-lg-2">
-                    <button id="import_transactions" class="btn btn-primary" style="width:100%;">TRANSACTIONS</button>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="input-group">
+                <input id="item_qty" type="number" class="form-control" placeholder="Quantity"/>
+                <div class="input-group-append">
+                    <span id="item_unit" class="input-group-text">pcs</span>
                 </div>
             </div>
+        </div>
 
-            <hr/>
+        <div class="col-lg-3" style="font-size:large;">
+            PRICE: <span id="item_price_tag"></span>
+        </div>
+    </div>
 
-            <table id="inventory_table" class="table table-striped table-bordered" style="width:100%;">
+    <div class="row">
+        <div class="col-lg-8">&nbsp;</div>
+
+        <div class="col-lg-2">
+            <button type="button" data-target="#or_details_modal" data-toggle="modal" class="btn btn-info" style="width:100%;">Submit</button>
+        </div>
+
+        <div class="col-lg-2">
+            <button id="add_to_cart" type="button" class="btn btn-success" style="width:100%;">Add To Cart</button>
+        </div>
+    </div>
+
+                <!-- The Modal OR_DETAILS -->
+                <div class="modal" id="or_details_modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content" style="width:150%">
+                    
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Official Receipt Details</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                    
+                            <!-- Modal body -->
+                            <div class="modal-body">
                                 
-                <thead>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <input type="date" class="form-control"/>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input type="number" class="form-control" placeholder="Doc.#"/>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <input type="text" class="form-control" placeholder="Sold to"/>
+                                    </div>
+                                </div>
+
+                            </div>
+                            
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success">Submit</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            </div>
+                    
+                        </div>
+                    </div>
+                </div>
+    
+
+    <hr style="border-color:#a7a5a5;"/>
+    <hr style="border-color:#a7a5a5;"/>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <table id="cart_table" class="table table-striped table-bordered" style="width:100%;">
+                        
+                <thead class="thead-dark">
                     <tr>
-                        <th colspan=6 style="text-align:center;">INVENTORY</th>
+                        <th colspan=9 style="text-align:center;">CART</th>
+                    </tr>
+                </thead>
+
+                <tbody id="cart_table_body">
+                    <tr style="font-weight:bold;">
+                        <td>ITEM</td>
+                        <td>Brand</td>
+                        <td>Qty</td>
+                        <td>Unit</td>
+                        <td>Price</td>
+                        <td>Amount</td>
+                        <td></td>
+                    </tr>
+                    <!-- <tr>
+                        <td>item 1</td>
+                        <td>Brand x</td>
+                        <td>143</td>
+                        <td>pcs</td>
+                        <td>500.00</td>
+                        <td>71500.00</td>
                     </tr>
                     <tr>
+                        <td>item 2</td>
+                        <td>Brand y</td>
+                        <td>99</td>
+                        <td>pcs</td>
+                        <td>2.00</td>
+                        <td>198.00</td>
+                    </tr> -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan=5 style="text-align:right;">Total: </td>
+                        <td colspan=2><b id="total_amount"></b></td>
+                    </tr>
+                </tfoot>
+            </table>                        
+
+        </div>
+    </div>
+    
+    <hr/><hr/>
+
+
+    <!-- TABLE OF TRANSACTIONS / Sold items -->
+    <div class="row">
+        <div class="col-lg-12">
+            <table id="sold_item_table" class="table table-striped table-bordered" style="width:100%;">
+                                
+                <thead class="thead-light">
+                    <tr>
+                        <th colspan=8 style="text-align:center;">Sold Items</th>
+                    </tr>
+                    <tr>
+                        <td>DATE</td>
                         <td>ITEM</td>
+                        <td>Brand</td>
                         <td>Qty</td>
                         <td>Unit</td>
                         <td>WSP</td>
@@ -59,7 +242,9 @@
 
                 <tbody>
                     <tr>
+                        <td>07/27/2014</td>
                         <td>item 1</td>
+                        <td>Brand x</td>
                         <td>143</td>
                         <td>pcs</td>
                         <td>450.00</td>
@@ -67,7 +252,9 @@
                         <td>JV Corp.</td>
                     </tr>
                     <tr>
+                        <td>08/19/2011</td>
                         <td>item 2</td>
+                        <td>Brand y</td>
                         <td>99</td>
                         <td>pcs</td>
                         <td>450.00</td>
@@ -87,89 +274,89 @@
                 </tfoot> -->
 
             </table>                        
-
         </div>
-
-
-        <!-- Right Column -->
-        <!-- <div class="col-lg-3">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th colspan="5" style="text-align: center;">TRANSACTIONS</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <td>DATE OF TRANSACTION</td>
-                        <td>Doc#</td>
-                        <td>Item</td>
-                        <td>Qty</td>
-                        <td>Unit</td>
-                    </tr>
-
-                    <tr>
-                        <td>July 27, 2018</td>
-                        <td>8</td>
-                        <td>Item 1</td>
-                        <td>100</td>
-                        <td>pcs</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div> -->
-
     </div>
+
+
 </div>
 
-                <!-- The Modal -->
-                <div class="modal" id="import_stocks_modal">
-                        <div class="modal-dialog">
-                            <div class="modal-content" style="width:150%">
-                        
-                                <!-- Modal Header -->
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Import Stocks</h4>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
-                        
-                                <!-- Modal body -->
-                                <div class="modal-body">
+<!-- The Modal ITEM LIST -->
+<div class="modal" id="items_modal">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:150%">
+    
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Items</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+    
+            <!-- Modal body -->
+            <div class="modal-body">                
+                <table id="items_table" class="table table-striped table-bordered" style="width:100%;">
+                    <thead class="thead-light">
+                        <tr>
+                            <th colspan=7 style="text-align:center;">List of Items</th>
+                        </tr>
+                        <tr>
+                            <td>ITEM</td>
+                            <td>Brand</td>
+                            <td>Qty Left</td>
+                            <td>Unit</td>
+                            <td>WSP</td>
+                            <td>SRP</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+    
+                    <tbody>
+                        <tr>
+                            <td>item 1</td>
+                            <td>Brand x</td>
+                            <td>143</td>
+                            <td>pcs</td>
+                            <td>450.00</td>
+                            <td>500.00</td>
+                            <td class="select_item" data-dismiss="modal">
+                                <button type="button" class="btn btn-success">+</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>item 2</td>
+                            <td>Brand y</td>
+                            <td>99</td>
+                            <td>kg</td>
+                            <td>450.00</td>
+                            <td>500.00</td>
+                            <td class="select_item" data-dismiss="modal">
+                                <button type="button" class="btn btn-success">+</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <!-- <tfoot>
+                        <tr>
+                            <td>ITEM</td>
+                            <td>Qty</td>
+                            <td>Unit</td>
+                            <td>WSP</td>
+                            <td>SRP</td>
+                            <td>DISTRIBUTOR</td>
+                        </tr>
+                    </tfoot> -->
+    
+                </table>
 
-                                    <div class="row">
-                                        <div class="col-lg-4">
-                                            Date
-                                            <input type="date" class="form-control"/>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            Document Number
-                                            <input type="number" class="form-control" placeholder="Doc#"/>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <input type="text" class="form-control" placeholder="Item"/>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-lg-3">
-                                            <input type="number" class="form-control" placeholder="Quantity"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Modal footer -->
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-success">Submit</button>
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                </div>
-                        
-                            </div>
-                        </div>
-                    </div>
-
+            </div>
+            
+            <!-- Modal footer -->
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-success">Submit</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div> -->
+    
+        </div>
+    </div>
+</div>
+    
 
 {% endblock %}
