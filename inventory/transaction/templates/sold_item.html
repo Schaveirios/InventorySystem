@@ -14,7 +14,7 @@
         }
 
         .remove_item:hover {
-            color:gray;
+            color:#f92e2e;
         }
     </style>
 
@@ -30,6 +30,7 @@
             var price;
             var qty;
             var amount=0;
+            var cart_no=1;
 
             $(".select_item").click(function(){
                 name = $(this).siblings().eq(0).text();
@@ -60,17 +61,22 @@
 
                 amount+=parseFloat(price)*parseFloat(qty);
                 
-                $("#cart_table_body").append("<tr>  <td>"+name+"</td> <td>"+brand+"</td> <td>"+qty+"</td> <td>"+unit+"</td> <td>"+price+"</td> <td>"+parseFloat(price)*parseFloat(qty)+"</td> <td class='remove_item' style='text-align:center;font-size:large;font-weight:bold;'>x</td>  </tr>");
+                $("#cart_table_body").append("<tr>  <td>"+name+"</td> <td>"+brand+"</td> <td>"+qty+"</td> <td>"+unit+"</td> <td>"+price+"</td> <td>"+parseFloat(price)*parseFloat(qty)+"</td> <td class='remove_item' id='remove_item_"+cart_no+"' "+"style='text-align:center;font-size:large;font-weight:bold;'>x</td>  </tr>");
 
                 $("#total_amount").text(amount);
 
-                $(".remove_item").click(function(){
+                $("#remove_item_"+cart_no).click(function(){
                     amount-=parseFloat($(this).prev().text());
                     alert(amount);
                     $("#total_amount").text(amount);
                     $(this).parent().remove();
                 });
+
+                cart_no+=1;
             });
+
+
+
             // $(".import_button").click(function(){
             //     var name=$(this).siblings().first().text();
             //     $("#item_name").val(name);
@@ -85,16 +91,16 @@
 <div class="container-fluid">
 
     <div class="row">
-        <div class="col-lg-9" data-target="#items_modal" data-toggle="modal">
+        <div class="col-lg-9">
             <input id="item_name" type="text" style="visibility:hidden;" class="form-control" placeholder="Item name"/>
             <div class="card">
-                <div id="item_name2" class="card-body">Item name</div>
+                <div id="item_name2" class="card-body" data-target="#items_modal" data-toggle="modal">Item name</div>
             </div>
         </div>
-        <div class="col-lg-3" data-target="#items_modal" data-toggle="modal" >
+        <div class="col-lg-3">
             <input id="item_brand" type="text" style="visibility:hidden;" class="form-control" placeholder="Brand"/>
             <div class="card">
-                <div id="item_brand2" class="card-body">Brand</div>
+                <div id="item_brand2" class="card-body" data-target="#items_modal" data-toggle="modal">Brand</div>
             </div>
         </div>
     </div>
@@ -164,7 +170,7 @@
                     </div>
                 </div>
     
-
+    
     <hr style="border-color:#a7a5a5;"/>
     <hr style="border-color:#a7a5a5;"/>
 
@@ -216,7 +222,9 @@
         </div>
     </div>
     
-    <hr/><hr/>
+    <br/><br/>
+    <hr/>
+    <hr style="border-color:#a7a5a5;"/>
 
 
     <!-- TABLE OF TRANSACTIONS / Sold items -->
