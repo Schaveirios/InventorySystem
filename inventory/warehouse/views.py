@@ -2,13 +2,15 @@ from django.shortcuts import render
 from .forms import ImportForm
 from transaction.models import ImportedStocks, Item, Transaction
 from django.utils import timezone 
+from django.contrib import messages
+
 
 def warehouse(request):
     
     if request.method == 'POST':
         form = ImportForm(request.POST)
 
-        if(form.is_valid):
+        if form.is_valid():
             print("VALIDATED")
 
             importform = form.cleaned_data
@@ -28,9 +30,13 @@ def warehouse(request):
 
             transaction.save()
 
-            item = Item.objects.get(name)
-            item.quantity+=quantity
-            item.save()
+            try:
+                item = Item.objects.get(name=name)
+                item.quantityLeft+=quantity
+                item.save()
+            except(Item.DoesNotExist):
+                messages.warning(request, "ITEM "+name+" DOES NOT EXIST")
+                return redirect('/warehouse/')
 
             stock = ImportedStocks(
                 date=date,
@@ -40,8 +46,21 @@ def warehouse(request):
                 item=item
             )
 
+            stock.save()
+
+            messages.success(request, "STOCKS ADDED")
+        else:
+            messages.warning(request, "INVALID INPUT")
+
+        return redirect("/warehouse/")
+
+    items = Item.objects.all()
+    transactions = ImportedStocks.objects.all()
+
     context={
         'ImportForm':ImportForm(auto_id=False),
+        'Items':items,
+        'Transactions':transactions,
     }
     
     return render(request, "warehouse.html", context)

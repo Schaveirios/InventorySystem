@@ -86,34 +86,22 @@
                 </thead>
 
                 <tbody>
+                    {% for item in Items %}
                     <tr>
-                        <td>item 1</td>
-                        <td>Brand x</td>
-                        <td>143</td>
-                        <td>pcs</td>
-                        <td>450.00</td>
-                        <td>500.00</td>
-                        <td>JV Corp.</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.brand}}</td>
+                        <td>{{item.quantityLeft}}</td>
+                        <td>{{item.unit}}</td>
+                        <td>{{item.price}}</td>
+                        <td>{{item.retailPrice}}</td>
+                        <td>{{item.distributor}}</td>
                         <td class="import_button">
                             <button type="button" class="btn btn-success" data-target="#import_stocks_modal" data-toggle="modal">
                                 +
                             </button>
                         </td>                    
                     </tr>
-                    <tr>
-                        <td>item 2</td>
-                        <td>Brand y</td>
-                        <td>99</td>
-                        <td>pcs</td>
-                        <td>450.00</td>
-                        <td>500.00</td>
-                        <td>JV Corp.</td>
-                        <td class="import_button">
-                            <button type="button" class="btn btn-success" data-target="#import_stocks_modal" data-toggle="modal">
-                                +
-                            </button>
-                        </td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
                 <!-- <tfoot>
                     <tr>
@@ -206,15 +194,22 @@
                                             {{ImportForm.unit}}
                                         </div>
                                     </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-lg-9">&nbsp;</div>
+                                        <div class="col-lg-3">
+                                            <button type="submit" class="btn btn-success form-control">Submit</button>
+                                        </div>
+                                    </div>
+
                                 </form>
 
                             </div>
                             
                             <!-- Modal footer -->
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-success">Submit</button>
+                            <!-- <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            </div>
+                            </div> -->
                     
                         </div>
                     </div>
@@ -254,17 +249,19 @@
                                         </thead>
                         
                                         <tbody>
+                                            {% for transaction in Transactions %}
                                             <tr>
-                                                <td>07/27/2014</td>
-                                                <td>item 1</td>
-                                                <td>Brand x</td>
-                                                <td>143</td>
-                                                <td>pcs</td>
-                                                <td>450.00</td>
-                                                <td>500.00</td>
-                                                <td>JV Corp.</td>          
+                                                <td>{{transaction.date}}</td>
+                                                <td>{{transaction.item.name}}</td>
+                                                <td>{{transaction.item.brand}}</td>
+                                                <td>{{transaction.quantity}}</td>
+                                                <td>{{transaction.item.unit}}</td>
+                                                <td>{{transaction.item.price}}</td>
+                                                <td>{{transaction.item.retailPrice}}</td>
+                                                <td>{{transaction.item.distributor}}</td>          
                                             </tr>
-                                            <tr>
+                                            {% endfor %}
+                                            <!-- <tr>
                                                 <td>08/19/2011</td>
                                                 <td>item 2</td>
                                                 <td>Brand y</td>
@@ -273,7 +270,7 @@
                                                 <td>450.00</td>
                                                 <td>500.00</td>
                                                 <td>JV Corp.</td>
-                                            </tr>
+                                            </tr> -->
                                         </tbody>
                                         <!-- <tfoot>
                                             <tr>
