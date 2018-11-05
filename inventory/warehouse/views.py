@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from .forms import ImportForm
+from django.shortcuts import render, redirect
+from .forms import ImportForm, NewItemForm
 from transaction.models import ImportedStocks, Item, Transaction
 from django.utils import timezone 
 from django.contrib import messages
@@ -59,8 +59,43 @@ def warehouse(request):
 
     context={
         'ImportForm':ImportForm(auto_id=False),
+        'NewItemForm':NewItemForm(auto_id=False),
         'Items':items,
         'Transactions':transactions,
     }
     
     return render(request, "warehouse.html", context)
+
+
+def add_item(request):
+
+    if request.method == 'POST':
+        form = NewItemForm(request.POST)
+        if form.is_valid():
+            
+            itemform = form.cleaned_data
+            name = itemform.get("name")
+            distributor = itemform.get("distributor")
+            brand = itemform.get("brand")
+            price = itemform.get("price")
+            retailPrice = itemform.get("retailPrice")
+            unit = itemform.get("unit")
+
+            item = Item(
+                name=name,
+                distributor=distributor,
+                brand=brand,
+                price=price,
+                retailPrice=retailPrice,
+                unit=unit,
+                quantityLeft=0
+            )
+
+            item.save()
+
+            messages.success(request, "NEW ITEM ADDED")
+        else:
+            messages.warning(request, "INVALID FORM")
+        
+        return redirect('/warehouse/')
+    return redirect('/warehouse/')

@@ -1,6 +1,39 @@
 from django import forms
 
 
+class NewItemForm(forms.Form):
+    name = forms.CharField(max_length=200, widget=forms.TextInput(attrs={
+        'class':'form-control',
+        'placeholder':'Item Name',
+    }))
+    brand = forms.CharField(max_length=100, widget=forms.TextInput(attrs={
+        'class':'form-control',
+        'placeholder':'Brand',
+    }))
+    price = forms.DecimalField(max_digits=10, decimal_places=2, widget=forms.NumberInput(attrs={
+        'class':'form-control',
+        'placeholder':'Price',
+    }))
+    retailPrice = forms.DecimalField(max_digits=10, decimal_places=2, widget=forms.NumberInput(attrs={
+        'class':'form-control',
+        'placeholder':'Retail Price',
+    }))
+    distributor = forms.CharField(max_length=200, widget=forms.TextInput(attrs={
+        'class':'form-control',
+        'placeholder':'Distributor',
+    }))
+    unit = forms.ChoiceField(
+        choices=[
+            ['pcs','pcs'],
+            ['pack','pack'],
+        ], widget=forms.Select(attrs={
+        'class':'form-control',
+    }))
+
+    def __str__(self):
+        return 'Add New Item'
+
+
 class ImportForm(forms.Form):
     date = forms.DateField(widget=forms.DateInput(attrs={
         'class':'form-control',
