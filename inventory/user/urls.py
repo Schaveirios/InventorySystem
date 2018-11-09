@@ -2,11 +2,12 @@ from django.conf.urls import url
 from django.urls import path
 from . import views
 
-# app_name = "entry"
+app_name = "user"
 
 urlpatterns = [
-    # url(r'^$', views.index, name='index'),
-    # url(r'^client$', views.register_client, name='register client'),
-    # url(r'^registerUser$', views.register_user, name='register_user')
-    # path('', views.transact, name='transaction'),
+    path('',views.index,name='index'),
+    url(r'^special/',views.special,name='special'),
+    path('login/', views.user_login, name='user_login'),
+    path('register/', views.register, name='register'),
+    path('logout/', views.user_logout, name='logout'),
 ]
