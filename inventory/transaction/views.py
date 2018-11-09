@@ -72,7 +72,7 @@ def sold_item(request):
         'items':items,
     }
 
-    return render(request, 'sold_item.html', context)
+    return render(request, 'transaction/sold_item.html', context)
 
 
 def return_item(request):
