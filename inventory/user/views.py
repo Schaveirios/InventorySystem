@@ -52,6 +52,6 @@ def user_login(request):
         else:
             print("Someone tried to login and failed.")
             print("They used username: {} and password: {}".format(username,password))
-            return render(request, '/login/login.html', {})
+            return render(request, 'login/login.html', {})
     else:
         return render(request, 'login/login.html', {})
