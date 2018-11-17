@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.forms import formset_factory
 from .forms import PurchaseForm
 from django.utils import timezone
-from transaction.models import ImportedStocks, Item, Transaction, PurchasedItem
+from .models import ImportedStocks, Item, Transaction, PurchasedItem
 from django.contrib import messages
 
 
