@@ -3,8 +3,9 @@ from .forms import ImportForm, NewItemForm
 from transaction.models import ImportedStocks, Item, Transaction
 from django.utils import timezone 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def warehouse(request):
     
     if request.method == 'POST':
@@ -66,7 +67,7 @@ def warehouse(request):
     
     return render(request, "warehouse.html", context)
 
-
+@login_required
 def add_item(request):
 
     if request.method == 'POST':
