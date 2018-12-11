@@ -44,7 +44,7 @@ def sold_item(request):
                     item.save()
                 except(Item.DoesNotExist):
                     messages.warning(request, "ITEM "+itemName+" DOES NOT EXIST")
-                    return redirect('/transaction/sold')
+                    return redirect('/transactionsold')
 
                 sold = PurchasedItem(
                     date=date,
@@ -58,10 +58,10 @@ def sold_item(request):
                 sold.save()
 
             messages.success(request, "Sold Item")
-            return redirect("/transaction/sold")
+            return redirect("/transactionsold")
         else:
             messages.warning(request, "Invalid Input: "+str(formset.errors))
-            return redirect("/transaction/sold")
+            return redirect("/transactionsold")
         
     else:
         formset = form(prefix="purchase")
