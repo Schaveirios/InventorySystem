@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.forms import formset_factory
-from .forms import PurchaseForm
+from .forms import PurchaseForm, SearchPurchaseForm
 from django.utils import timezone
 from .models import ImportedStocks, Item, Transaction, PurchasedItem
 from django.contrib import messages
@@ -76,4 +76,34 @@ def sold_item(request):
 
 
 def return_item(request):
-    return render(request, 'return_item.html')
+    context={
+        'searchform':SearchPurchaseForm()
+    }
+    return render(request, 'return_item.html', context)
+
+
+def search_purchase(request):
+    if(request.method=='POST'):
+        form = SearchPurchaseForm(request.POST)
+        if form.is_valid():
+            search = form.cleaned_data
+            date = search.get("date")
+            documentNumber = search.get("documentNumber")
+
+            try:
+                transactions = PurchasedItem.objects.filter(date=date, documentNumber=documentNumber)
+            except(PurchasedItem.DoesNotExist):
+                messages.warning(request, "Transaction Does Not Exist")
+                return redirect('/transaction/return')
+
+            context={
+                'searchform':SearchPurchaseForm(),
+                'transactions':transactions,
+            }
+            return render(request, 'return_item.html', context)
+
+        else:
+            messages.warning(request, "Invalid Input: "+str(form.errors))
+            return redirect("/transaction/return")
+
+    return redirect('/transaction/return')
