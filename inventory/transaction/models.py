@@ -36,6 +36,7 @@ class PurchasedItem(models.Model):
 class ReturnedItem(models.Model):
     purchasedItem = models.ForeignKey(PurchasedItem, on_delete=models.PROTECT)
     dateReturned = models.DateField("Date Returned")
+    condition = models.CharField(max_length=10)
     remark = models.TextField()
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)

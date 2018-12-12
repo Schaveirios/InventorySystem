@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.forms import formset_factory
-from .forms import PurchaseForm, SearchPurchaseForm
+from .forms import PurchaseForm, SearchPurchaseForm, ReturnForm
 from django.utils import timezone
 from .models import ImportedStocks, Item, Transaction, PurchasedItem
 from django.contrib import messages
@@ -77,8 +77,49 @@ def sold_item(request):
 
 def return_item(request):
     context={
-        'searchform':SearchPurchaseForm()
+        'searchform':SearchPurchaseForm(),
+        'return_form':ReturnForm(),
     }
+
+    if(request.method=='POST'):
+        form = ReturnForm(request.POST)
+        if form.is_valid():
+            returnitem = form.cleaned_data
+            condition = returnitem.get("condition")
+            dateReturned = returnitem.get("dateReturned")
+            remark = returnitem.get("remark")
+            quantity = returnitem.get("quantity")
+            purchaseId = returnitem.get("purchaseId")
+
+            try:
+                purchaseditem = PurchasedItem.objects.get(id=purchaseId)
+            except(PurchasedItem.DoesNotExist):
+                messages.warning(request, "Transaction Does Not Exist")
+                return redirect('/transaction/return')
+            
+            transaction = Transaction(
+                entryDate=dateReturned,
+                nameOfTransaction=form.__str__()
+            )
+            transaction.save()
+
+            return_item = ReturnedItem(
+                purchaseditem=purchaseditem,
+                dateReturned=dateReturned,
+                condition=condition,
+                remark=remark,
+                quantity=quantity,
+                transaction=transaction
+            ) 
+            
+            return_item.save()
+            messages.success(request, "Item returned")
+            redirect("/transaction/return")
+            
+        else:
+            messages.warning(request, "Invalid Input")
+            return redirect("/transaction/return")
+
     return render(request, 'return_item.html', context)
 
 
@@ -90,20 +131,26 @@ def search_purchase(request):
             date = search.get("date")
             documentNumber = search.get("documentNumber")
 
-            try:
-                transactions = PurchasedItem.objects.filter(date=date, documentNumber=documentNumber)
-            except(PurchasedItem.DoesNotExist):
+            transactions = PurchasedItem.objects.filter(date=date, documentNumber=documentNumber)
+            
+            if(len(transactions)==0):
                 messages.warning(request, "Transaction Does Not Exist")
                 return redirect('/transaction/return')
+
+            total=0
+            for purchase in transactions:
+                total+=purchase.quantity*purchase.item.retailPrice
 
             context={
                 'searchform':SearchPurchaseForm(),
                 'transactions':transactions,
+                'total':total,
+                'return_form':ReturnForm(),
             }
             return render(request, 'return_item.html', context)
 
         else:
-            messages.warning(request, "Invalid Input: "+str(form.errors))
+            messages.warning(request, "Invalid Input")
             return redirect("/transaction/return")
 
     return redirect('/transaction/return')

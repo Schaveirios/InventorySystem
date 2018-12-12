@@ -16,6 +16,12 @@
 
     <script>
         {% load transact_filters %}
+
+        $("document").ready(function(){
+            $(".return_button").click(function(){
+                $("#purchaseId").val(parseInt(this.name));
+            })
+        });
     </script>
 {% endblock %}
 
@@ -76,7 +82,7 @@
                         <td>{{transact.item.unit}}</td>
                         <td>{{transact.item.retailPrice}}</td>
                         <td>{{transact.quantity|mult:transact.item.retailPrice}}</td>
-                        <td><button class="btn btn-success" data-target="#return_form" data-toggle="modal">x</button></td>
+                        <td><button name="{{transact.id}}" class="btn btn-warning return_button" data-target="#return_form" data-toggle="modal">return</button></td>
                     </tr>
                     {% endfor %}
 
@@ -84,7 +90,7 @@
                 <tfoot>
                     <tr>
                         <td colspan=6 style="text-align:right;">Total: </td>
-                        <td colspan=2><b id="total_amount"></b></td>
+                        <td colspan=2><b id="total_amount">{{total}}</b></td>
                     </tr>
                 </tfoot>
             </table>                        
@@ -107,14 +113,41 @@
     
             <!-- Modal body -->
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-lg-5">
-                        <!-- RADIO BUTTON HERE for Defective or Refund -->
+                <form >
+                    {% csrf_token %}
+                    <!-- <div class="row">
+                        <div class="col-lg-5">
+                            <button id="defective" class="btn btn-warning">Defective</button>
+                        </div>
+                        <div class="col-lg-5">
+                            <button id="not_defective" class="btn btn-primary">Not Defective</button>
+                        </div>
+                    </div> -->
+                    {{return_form.purchaseId}}
+                    <div class="row">
+                        <div class="col-lg-5">
+                            Date Returned
+                            {{return_form.dateReturned}}
+                        </div>
                     </div>
-                    <div class="col-lg-5">
-                        <!-- TEXT AREA HERE -->
+                    <div class="row">
+                        <div class="col-lg-5">
+                            Condition
+                            {{return_form.condition}}
+                        </div>
+                        <div class="col-lg-5">
+                            Quantity
+                            {{return_form.quantity}}
+                        </div>
                     </div>
-                </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            Remarks
+                            {{return_form.remark}}
+                        </div>
+                    </div>
+                </form>
             </div>
             
             <!-- Modal footer -->
