@@ -74,16 +74,29 @@
                         <td></td>
                     </tr>
                     {% for transact in transactions %}
-                    <tr>
-                        <td>{{transact.id}}</td>
-                        <td>{{transact.item.name}}</td>
-                        <td>{{transact.item.brand}}</td>
-                        <td>{{transact.quantity}}</td>
-                        <td>{{transact.item.unit}}</td>
-                        <td>{{transact.item.retailPrice}}</td>
-                        <td>{{transact.quantity|mult:transact.item.retailPrice}}</td>
-                        <td><button name="{{transact.id}}" class="btn btn-warning return_button" data-target="#return_form" data-toggle="modal">return</button></td>
-                    </tr>
+                        {% if transact|check_item %}
+                            <tr style="color:red;">
+                                <td>{{transact.id}}{{transact_status}}</td>
+                                <td>{{transact.item.name}}</td>
+                                <td>{{transact.item.brand}}</td>
+                                <td>{{transact.quantity}}</td>
+                                <td>{{transact.item.unit}}</td>
+                                <td>{{transact.item.retailPrice}}</td>
+                                <td>{{transact.quantity|mult:transact.item.retailPrice}}</td>
+                                <!-- <td><button name="{{transact.id}}" class="btn btn-warning return_button" data-target="#return_form" data-toggle="modal">return</button></td> -->
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td>{{transact.id}}{{transact_status}}</td>
+                                <td>{{transact.item.name}}</td>
+                                <td>{{transact.item.brand}}</td>
+                                <td>{{transact.quantity}}</td>
+                                <td>{{transact.item.unit}}</td>
+                                <td>{{transact.item.retailPrice}}</td>
+                                <td>{{transact.quantity|mult:transact.item.retailPrice}}</td>
+                                <td><button name="{{transact.id}}" class="btn btn-warning return_button" data-target="#return_form" data-toggle="modal">return</button></td>
+                            </tr>
+                        {% endif %}
                     {% endfor %}
 
                 </tbody>
@@ -113,7 +126,7 @@
     
             <!-- Modal body -->
             <div class="modal-body">
-                <form >
+                <form action="{% url 'transact:return_item' %}" method="POST">
                     {% csrf_token %}
                     <!-- <div class="row">
                         <div class="col-lg-5">
@@ -145,6 +158,12 @@
                         <div class="col-lg-12">
                             Remarks
                             {{return_form.remark}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-9"></div>
+                        <div class="col-lg-3">
+                            <input type="submit" class="btn btn-success form-control">
                         </div>
                     </div>
                 </form>

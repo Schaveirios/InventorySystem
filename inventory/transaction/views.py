@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.forms import formset_factory
 from .forms import PurchaseForm, SearchPurchaseForm, ReturnForm
 from django.utils import timezone
-from .models import ImportedStocks, Item, Transaction, PurchasedItem
+from .models import ImportedStocks, Item, Transaction, PurchasedItem, ReturnedItem
 from django.contrib import messages
 
 
@@ -92,19 +92,28 @@ def return_item(request):
             purchaseId = returnitem.get("purchaseId")
 
             try:
-                purchaseditem = PurchasedItem.objects.get(id=purchaseId)
+                purchased_item = PurchasedItem.objects.get(id=purchaseId)
             except(PurchasedItem.DoesNotExist):
                 messages.warning(request, "Transaction Does Not Exist")
+                return redirect('/transaction/return')            
+
+            if(quantity>purchased_item.quantity):
+                messages.warning(request, "Invalid quantity")
                 return redirect('/transaction/return')
-            
+
             transaction = Transaction(
                 entryDate=dateReturned,
                 nameOfTransaction=form.__str__()
             )
             transaction.save()
 
+            if(condition=="good condition"):
+                item = purchased_item.item
+                item.quantityLeft+=quantity
+                item.save()
+
             return_item = ReturnedItem(
-                purchaseditem=purchaseditem,
+                purchasedItem=purchased_item,
                 dateReturned=dateReturned,
                 condition=condition,
                 remark=remark,
@@ -113,6 +122,21 @@ def return_item(request):
             ) 
             
             return_item.save()
+
+            transactions = PurchasedItem.objects.filter(transaction__id=purchased_item.transaction.id)
+            total=0
+            for purchase in transactions:
+                total+=purchase.quantity*purchase.item.retailPrice
+
+            context={
+                'searchform':SearchPurchaseForm(),
+                'transactions':transactions,
+                'total':total,
+                'return_form':ReturnForm(),
+            }
+
+            return render(request, 'return_item.html', context)
+
             messages.success(request, "Item returned")
             redirect("/transaction/return")
             

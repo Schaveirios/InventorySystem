@@ -42,7 +42,7 @@ class ReturnedItem(models.Model):
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.item.name+" "+str(self.quantity)
+        return self.purchasedItem.item.name+" "+str(self.quantity)
 
 
 class DefectiveItem(models.Model):

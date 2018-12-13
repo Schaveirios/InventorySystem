@@ -11,4 +11,11 @@ def mult(value1, value2):
 @register.filter
 def check_item(value):
     try:
-        Re
+        returned_item = ReturnedItem.objects.get(purchasedItem__id=value.id)
+    except(ReturnedItem.DoesNotExist):
+        return False
+    
+    # if(returned_item.condition=="good condition"):
+    #     return "good"
+    # else:
+    return True
