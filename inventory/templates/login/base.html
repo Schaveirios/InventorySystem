@@ -11,17 +11,36 @@
       <div class="container">
         <ul class="nav navbar-nav">
 {# Django Home Link / Admin Link / Register Link#}
+
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3></h3>
+            <!-- <strong>JTV</strong> -->
+        </div>
+
+        <ul class="list-unstyled components">
+            <li class="active">
+                <a href="/warehouse/add_item/" aria-expanded="false">
+                    <i class="navbar-link"></i>
+                    Home
+                </a>
+            </li>
+    
          
           <!-- <li><a class="navbar-link" href="{% url 'user:register' %}">Register</a></li>      -->
-          {# Some logic on what to display for last item#}
+          <!-- {# Some logic on what to display for last item#}
           {% if user.is_authenticated %}
-            <li><a href="{% url 'user:logout' %}">Logout</a></li>
+            <li><a href="warehouse.html">Home</a></li>
           {% else %}
             <li><a class="navbar-link" href="{% url 'user:user_login' %}">Login</a></li>
-          {% endif %}
-</ul>
+          {% endif %} -->
+        </ul>
+      </nav>
       </div>
-    </nav>
+
+    
     <div class="container">
     {% block body_block %}
     {% endblock %}

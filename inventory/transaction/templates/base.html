@@ -88,11 +88,11 @@
                         </ul> -->
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="{% url 'transact:sold_item' %}">
                             <i class="fas fa-plus-square"></i>
                             Sell Item
                         </a>
-                        <a href="#">
+                        <a href="{% url 'transact:return_item' %}">
                             <i class="fas fa-cart-arrow-down"></i>
                             Return Item
                         </a>
@@ -141,7 +141,7 @@
                     </li>
 
                     <li>
-                        <a href="{% url 'user:logout' %}">
+                        <a href="{% url 'logout' %}">
                             <i class="fas fa-sign-out-alt"></i>
                             Logout
                         </a>

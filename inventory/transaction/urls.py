@@ -8,7 +8,7 @@ urlpatterns = [
     # url(r'^$', views.index, name='index'),
     # url(r'^client$', views.register_client, name='register client'),
     # url(r'^registerUser$', views.register_user, name='register_user')
-    path('sold', views.sold_item, name='sold_item'),
-    path('return', views.return_item, name='return_item'),
+    path('/sold', views.sold_item, name='sold_item'),
+    path('/return', views.return_item, name='return_item'),
     path('searchPurchase', views.search_purchase, name='search_purchase'),
 ]

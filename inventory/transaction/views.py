@@ -4,8 +4,9 @@ from .forms import PurchaseForm, SearchPurchaseForm, ReturnForm
 from django.utils import timezone
 from .models import ImportedStocks, Item, Transaction, PurchasedItem, ReturnedItem
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def sold_item(request):
     form = formset_factory(PurchaseForm, extra=20, max_num=20)
     purchases = PurchasedItem.objects.all()
@@ -75,6 +76,7 @@ def sold_item(request):
     return render(request, 'transaction/sold_item.html', context)
 
 
+@login_required
 def return_item(request):
     context={
         'searchform':SearchPurchaseForm(),
@@ -147,6 +149,7 @@ def return_item(request):
     return render(request, 'return_item.html', context)
 
 
+@login_required
 def search_purchase(request):
     if(request.method=='POST'):
         form = SearchPurchaseForm(request.POST)
