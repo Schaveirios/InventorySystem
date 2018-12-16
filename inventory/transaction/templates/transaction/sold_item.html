@@ -305,7 +305,7 @@
                                 
                 <thead class="thead-light">
                     <tr>
-                        <th colspan=8 style="text-align:center;">Sold Items</th>
+                        <th colspan=9 style="text-align:center;">Sold Items</th>
                     </tr>
                     <tr>
                         <td>DATE</td>
@@ -316,6 +316,8 @@
                         <td>WSP</td>
                         <td>SRP</td>
                         <td>DISTRIBUTOR</td>
+                        <td>Sold To</td>
+
                     </tr>
                 </thead>
 
@@ -330,6 +332,8 @@
                         <td>{{entry.item.price}}</td>
                         <td>{{entry.item.retailPrice}}</td>
                         <td>{{entry.item.distributor}}</td>
+                        <td>{{entry.soldTo}}</td>
+
                     </tr>
                     {% endfor %}
                 </tbody>

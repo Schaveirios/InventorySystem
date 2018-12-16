@@ -9,13 +9,16 @@ from django.contrib import messages
 
 def index(request):
     return render(request,'login/login.html')
+
 @login_required
 def special(request):
     return HttpResponse("You are logged in !")
+
 @login_required
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
+    
 @login_required
 def register(request):
     registered = False
@@ -38,17 +41,14 @@ def register(request):
             print(user_form.errors,profile_form.errors)
             messages.warning(request, 'Username already taken.')
             return render(request,'login/registration1.html',
-                        #   {'user_form':user_form,
-                        #    'profile_form':profile_form,
                              {'registered':registered})
         return redirect('/warehouse/')
     else:
         user_form = UserForm()
         profile_form = UserProfileInfoForm()
     return render(request,'login/registration1.html')
-                        #   {'user_form':user_form,
-                        #    'profile_form':profile_form,
-                        #    'registered':registered})
+                    
+                    
 def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')

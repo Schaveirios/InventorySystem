@@ -8,5 +8,4 @@ app_name = 'user'
 urlpatterns=[
     path('login/', views.user_login, name='user_login'),
     path('register/', views.register, name='register'),
-    # url(r'^user_login/$',views.user_login,name='user_login'),
 ]
