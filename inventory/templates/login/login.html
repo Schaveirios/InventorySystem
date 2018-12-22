@@ -15,9 +15,9 @@
 <script src="{% static '/js/jquery-1.11.1.min.js' %}"></script>
 <script src="{% static '/js/bootstrap.min.js' %}"></script>
 <!-- <script src="{% static '/img/photo.png' %}"></script> -->
-<!-- <script src="{% static '/fonts/glyphicons-halflings-regular.woff' %}"></script>
+<script src="{% static '/fonts/glyphicons-halflings-regular.woff' %}"></script>
 <script src="{% static '/fonts/glyphicons-halflings-regular.woff2' %}"></script>
-<script src="{% static '/fonts/glyphicons-halflings-regular.ttf' %}"></script> -->
+<script src="{% static '/fonts/glyphicons-halflings-regular.ttf' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static '/css/login.css' %}">
 </head>
 
@@ -87,7 +87,7 @@
 						</form>
 					</div>
 					<div class="panel-footer">
-						<!-- Don't have an account! <a href="#" onClick=""> Sign Up Here </a> -->
+						
 					</div>
                 </div>
 			</div>
@@ -97,19 +97,3 @@
 </body>
 </html>
 
-
-
-  <!-- <div class="container">
-    <div class="jumbotron">
-      <h1>Login here :</h1>
-<form method="post" action="{% url 'user:user_login' %}">
-          {% csrf_token %}
-          {# A more "HTML" way of creating the login form#}
-          <label for="username">Username:</label>
-          <input type="text" name="username" placeholder="Username">
-<label for="password">Password:</label>
-          <input type="password" name="password" placeholder="Password">
-<input type="submit" name="" value="Login">
-</form>
-</div>
-  </div> -->
