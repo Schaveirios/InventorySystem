@@ -45,7 +45,7 @@
     <body>
         {% if messages %}
             {% for message in messages %}
-                <div id="notification" style="
+                <div id="flash" style="
                     width:30%;
                     left:67%;
                     top:80%;
@@ -196,6 +196,12 @@
             $(document).ready(function () {
                 $('#sidebarCollapse').on('click', function () {
                     $('#sidebar').toggleClass('active');
+                });
+            });
+
+            $(function() {
+                $('#flash').delay(500).fadeIn('normal', function() {
+                    $(this).delay(1000).fadeOut();
                 });
             });
         </script>
