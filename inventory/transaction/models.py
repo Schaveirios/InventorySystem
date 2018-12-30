@@ -27,22 +27,22 @@ class PurchasedItem(models.Model):
     documentNumber = models.PositiveIntegerField()
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
     soldTo = models.CharField(max_length=100)
-    discount = models.DecimalField(max_digits=4, decimal_places=2)
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.item.name+" "+str(quantity)
+        return self.item.name+" "+str(self.quantity)
 
 
 class ReturnedItem(models.Model):
     purchasedItem = models.ForeignKey(PurchasedItem, on_delete=models.PROTECT)
     dateReturned = models.DateField("Date Returned")
+    condition = models.CharField(max_length=10)
     remark = models.TextField()
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.item.name+" "+str(self.quantity)
+        return self.purchasedItem.item.name+" "+str(self.quantity)
 
 
 class DefectiveItem(models.Model):

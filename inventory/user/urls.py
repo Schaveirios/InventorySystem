@@ -1,12 +1,11 @@
 from django.conf.urls import url
+from user import views
 from django.urls import path
 from . import views
-
-# app_name = "entry"
-
-urlpatterns = [
-    # url(r'^$', views.index, name='index'),
-    # url(r'^client$', views.register_client, name='register client'),
-    # url(r'^registerUser$', views.register_user, name='register_user')
-    # path('', views.transact, name='transaction'),
+# SET THE NAMESPACE!
+app_name = 'user'
+# Be careful setting the name to just /login use userlogin instead!
+urlpatterns=[
+    path('login/', views.user_login, name='user_login'),
+    path('register/', views.register, name='register'),
 ]

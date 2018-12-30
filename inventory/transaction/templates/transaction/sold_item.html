@@ -1,0 +1,428 @@
+{% extends 'base.html' %}
+
+{% block title %} Sold Item {% endblock %}
+
+
+{% block head %}
+    <style>
+        .row {
+            margin-bottom: 10px;
+        }
+
+        .card-body {
+            padding:10px;
+        }
+
+        /* .remove_item:hover {
+            color:#f92e2e;
+        } */
+    </style>
+
+    <script>
+        $("document").ready(function(){
+
+            $("#sold_item_table").DataTable();
+            $("#transactions_table").DataTable();
+            $("#items_table").DataTable();
+            
+            var name="";
+            var brand="";
+            var unit;
+            var price;
+            // var qty;
+            var amount=0;
+            var cart_no=0;
+            var cart_filled=[];
+            var itemQtyLeft=0;
+            var itemSelected;
+            var itemId;
+
+            $(".select_item").click(function(){
+                itemQtyLeft = parseFloat($(this).siblings().eq(2).text());
+                itemId = $(this).siblings().eq(2).attr("id");
+                if(itemQtyLeft<=0){
+                    alert("OUT OF STOCK");
+                    return;
+                }
+
+                name = $(this).siblings().eq(0).text();
+                brand = $(this).siblings().eq(1).text();
+                unit = $(this).siblings().eq(3).text();
+                price = $(this).siblings().eq(5).text();
+
+                $("#item_name").val(name);
+                $("#item_brand").val(brand);
+                $("#item_unit").text(unit);
+                $("#item_price_tag").text(price);
+                $("#item_qty_left").text(itemQtyLeft);
+                $("#item_name2").text(name);
+                $("#item_brand2").text(brand);
+                
+                itemSelectedQty = $(this).siblings().eq(2);
+            });
+
+            $("#add_to_cart").click(function(){              
+                var qty = $("#item_qty").val();
+                if(cart_no==19){
+                    alert("Cant add the Cart is full!")
+                }
+
+                if(qty==""|| qty<=0){
+                    alert("Invalid QUANTITY");
+                    return;
+                }
+
+                if(qty>itemQtyLeft){
+                    alert("Sorry there are only "+itemQtyLeft+" "+unit+" left for this item");
+                    return;
+                }
+                else{
+                    itemQtyLeft-=qty;
+                    $("#item_qty_left").text(itemQtyLeft);
+                    itemSelectedQty.text(itemQtyLeft);
+                }
+                
+                if(name=="" || brand==""){
+                    alert("Please Select an Item");
+                    return;
+                }
+
+                cart_filled.push(cart_no);
+                alert(cart_filled)
+                $("#id_purchase-"+cart_no+"-itemName").val(name);
+                $("#id_purchase-"+cart_no+"-brand").val(brand);
+                $("#id_purchase-"+cart_no+"-quantity").val(qty);
+
+                amount+=parseFloat(price)*parseFloat(qty);
+                
+                $("#cart_table_body").append("<tr>  <td>"+name+"</td> <td>"+brand+"</td> <td>"+qty+"</td> <td>"+unit+"</td> <td>"+price+"</td> <td>"+parseFloat(price)*parseFloat(qty)+"</td> <td class='remove_item' name='"+itemId+"' style='text-align:center;font-size:large;font-weight:bold;'><button type='button' class='btn btn-danger'"+"id='remove_item_"+cart_no+"' "+">x</button></td>  </tr>");
+
+                $("#total_amount").text(amount);
+
+                $("#remove_item_"+cart_no).click(function(){
+                    var myid = $(this).attr("id").split("_")[2]
+                    var myitemId = $(this).parent().attr("name");
+                    
+                    cart_filled = cart_filled.filter(function(item) { 
+                        return item !== parseInt(myid)
+                    })
+                    alert(cart_filled)
+
+                    $("#id_purchase-"+myid+"-itemName").val(undefined);
+                    $("#id_purchase-"+myid+"-brand").val(undefined);
+                    $("#id_purchase-"+myid+"-quantity").val(undefined);
+                    $("#id_purchase-"+myid+"-date").val(undefined);
+                    $("#id_purchase-"+myid+"-documentNumber").val(undefined);
+                    $("#id_purchase-"+myid+"-soldTo").val(undefined);
+
+                    amount-=parseFloat($(this).parent().prev().text());
+                    var current_Qty = parseFloat($("#"+myitemId).text());
+                    var return_Qty = parseFloat($(this).parent().siblings().eq(2).text())
+                    itemQtyLeft+=return_Qty
+
+                    $("#"+myitemId).text(return_Qty+current_Qty);
+                    $("#item_qty_left").text(return_Qty+current_Qty);
+                    $("#total_amount").text(amount);
+                    $(this).parent().parent().remove();
+                    cart_no-=1;
+                });
+
+                $("#item_qty").val("")
+                cart_no+=1;
+            });
+
+            $("#input_OR").click(function(){
+                var or_date = $("#or_date").val()
+                var or_docNum = $("#or_docNum").val()
+                var or_soldTo = $("#or_soldTo").val()
+
+                if(or_date=="" || or_docNum=="" || or_soldTo==""){
+                    alert("INVALID OR DETAILS");
+                    return
+                }
+                alert(cart_filled)
+                for(var form_id=0; form_id<cart_no; form_id++){
+                    $("#id_purchase-"+cart_filled[form_id]+"-date").val(or_date);
+                    $("#id_purchase-"+cart_filled[form_id]+"-documentNumber").val(or_docNum);
+                    $("#id_purchase-"+cart_filled[form_id]+"-soldTo").val(or_soldTo);
+                }
+
+                $("#submit_cart").trigger("click");
+            });
+
+            // $(".import_button").click(function(){
+            //     var name=$(this).siblings().first().text();
+            //     $("#item_name").val(name);
+            // });
+        });
+    </script>
+{% endblock %}
+
+
+{% block body %}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-lg-9">
+            <input id="item_name" type="text" style="visibility:hidden;" class="form-control" placeholder="Item name"/>
+            <div class="card">
+                <div id="item_name2" class="card-body" data-target="#items_modal" data-toggle="modal">Item name</div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <input id="item_brand" type="text" style="visibility:hidden;" class="form-control" placeholder="Brand"/>
+            <div class="card">
+                <div id="item_brand2" class="card-body" data-target="#items_modal" data-toggle="modal">Brand</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="input-group">
+                <input id="item_qty" type="number" class="form-control" placeholder="Quantity"/>
+                <div class="input-group-append">
+                    <span id="item_unit" class="input-group-text">pcs</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3" style="font-size:large;">
+            PRICE: <span id="item_price_tag"></span>
+        </div>
+        <div class="col-lg-3" style="font-size:large;">
+            Quantity Left: <span id="item_qty_left"></span>
+        </div>
+    
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">&nbsp;</div>
+
+        <div class="col-lg-2">
+            <button type="button" data-target="#or_details_modal" data-toggle="modal" class="btn btn-info" style="width:100%;">Submit</button>
+        </div>
+
+        <div class="col-lg-2">
+            <button id="add_to_cart" type="button" class="btn btn-success" style="width:100%;">Add To Cart</button>
+        </div>
+    </div>
+
+                <!-- The Modal OR_DETAILS -->
+                <div class="modal" id="or_details_modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content" style="width:150%">
+                    
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Official Receipt Details</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                    
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                
+                                <form action="{% url 'transact:sold_item' %}" method="post" style="visibility:hidden;position:absolute;left:-110%;">
+                                    {% csrf_token %}
+                                    {{ formset.management_form }}
+                                    <table>
+                                        {{formset}}
+                                    </table>
+                                    <button type="submit" id="submit_cart">SUBMIT</button>                                    
+                                </form>
+
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <input id="or_date" type="date" class="form-control"/>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input id="or_docNum" type="number" class="form-control" placeholder="Doc.#"/>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <input id="or_soldTo" type="text" class="form-control" placeholder="Sold to"/>
+                                    </div>
+                                </div>
+
+                            </div>
+                            
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button id="input_OR" type="button" class="btn btn-success">Submit</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            </div>
+                    
+                        </div>
+                    </div>
+                </div>
+    
+    
+    <hr style="border-color:#a7a5a5;"/>
+    <hr style="border-color:#a7a5a5;"/>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <table id="cart_table" class="table table-striped table-bordered" style="width:100%;">
+                        
+                <thead class="thead-dark">
+                    <tr>
+                        <th colspan=9 style="text-align:center;">CART</th>
+                    </tr>
+                </thead>
+
+                <tbody id="cart_table_body">
+                    <tr style="font-weight:bold;">
+                        <td>ITEM</td>
+                        <td>Brand</td>
+                        <td>Qty</td>
+                        <td>Unit</td>
+                        <td>Price</td>
+                        <td>Amount</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan=5 style="text-align:right;">Total: </td>
+                        <td colspan=2><b id="total_amount"></b></td>
+                    </tr>
+                </tfoot>
+            </table>                        
+
+        </div>
+    </div>
+    
+    <br/><br/>
+    <hr/>
+    <hr style="border-color:#a7a5a5;"/>
+
+
+    <!-- TABLE OF TRANSACTIONS / Sold items -->
+    <div class="row">
+        <div class="col-lg-12">
+            <table id="sold_item_table" class="table table-striped table-bordered" style="width:100%;">
+                                
+                <thead class="thead-light">
+                    <tr>
+                        <th colspan=9 style="text-align:center;">Sold Items</th>
+                    </tr>
+                    <tr>
+                        <td>DATE</td>
+                        <td>ITEM</td>
+                        <td>Brand</td>
+                        <td>Qty</td>
+                        <td>Unit</td>
+                        <td>WSP</td>
+                        <td>SRP</td>
+                        <td>DISTRIBUTOR</td>
+                        <td>Sold To</td>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for entry in purchases %}
+                    <tr>
+                        <td>{{entry.date}}</td>
+                        <td>{{entry.item.name}}</td>
+                        <td>{{entry.item.brand}}</td>
+                        <td>{{entry.quantity}}</td>
+                        <td>{{entry.item.unit}}</td>
+                        <td>{{entry.item.price}}</td>
+                        <td>{{entry.item.retailPrice}}</td>
+                        <td>{{entry.item.distributor}}</td>
+                        <td>{{entry.soldTo}}</td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <!-- <tfoot>
+                    <tr>
+                        <td>ITEM</td>
+                        <td>Qty</td>
+                        <td>Unit</td>
+                        <td>WSP</td>
+                        <td>SRP</td>
+                        <td>DISTRIBUTOR</td>
+                    </tr>
+                </tfoot> -->
+
+            </table>                        
+        </div>
+    </div>
+
+</div>
+
+<!-- The Modal ITEM LIST -->
+<div class="modal" id="items_modal">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:150%">
+    
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Items</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+    
+            <!-- Modal body -->
+            <div class="modal-body">                
+                <table id="items_table" class="table table-striped table-bordered" style="width:100%;">
+                    <thead class="thead-light">
+                        <tr>
+                            <th colspan=7 style="text-align:center;">List of Items</th>
+                        </tr>
+                        <tr>
+                            <td>ITEM</td>
+                            <td>Brand</td>
+                            <td>Qty Left</td>
+                            <td>Unit</td>
+                            <td>WSP</td>
+                            <td>SRP</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+    
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <td>{{item.name}}</td>
+                            <td>{{item.brand}}</td>
+                            <td id="item_{{item.id}}">{{item.quantityLeft}}</td>
+                            <td>{{item.unit}}</td>
+                            <td>{{item.price}}</td>
+                            <td>{{item.retailPrice}}</td>
+                            <td class="select_item" data-dismiss="modal">
+                                <button type="button" class="btn btn-success">+</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                    <!-- <tfoot>
+                        <tr>
+                            <td>ITEM</td>
+                            <td>Qty</td>
+                            <td>Unit</td>
+                            <td>WSP</td>
+                            <td>SRP</td>
+                            <td>DISTRIBUTOR</td>
+                        </tr>
+                    </tfoot> -->
+    
+                </table>
+
+            </div>
+            
+            <!-- Modal footer -->
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-success">Submit</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div> -->
+    
+        </div>
+    </div>
+</div>
+    
+
+{% endblock %}
