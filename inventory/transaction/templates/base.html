@@ -43,24 +43,6 @@
 
 
     <body>
-        {% if messages %}
-            {% for message in messages %}
-                <div id="notification" style="
-                    width:30%;
-                    left:67%;
-                    top:80%;
-                    position:absolute;
-                    height:15%;
-                    z-index:1;
-                    ">
-                    <div class="alert alert-{{message.tags}} alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            {{ message }}
-                    </div>
-                </div>
-            {% endfor %}
-        {% endif %}
-
         <div class="wrapper">
             <!-- Sidebar  -->
             <nav id="sidebar">
@@ -88,11 +70,11 @@
                         </ul> -->
                     </li>
                     <li>
-                        <a href="{% url 'transact:sold_item' %}">
+                        <a href="#">
                             <i class="fas fa-plus-square"></i>
                             Sell Item
                         </a>
-                        <a href="{% url 'transact:return_item' %}">
+                        <a href="#">
                             <i class="fas fa-cart-arrow-down"></i>
                             Return Item
                         </a>
@@ -111,7 +93,7 @@
                                 <a href="#">Annual Report</a>
                             </li>
                         </ul>
-                        <a href="{% url 'warehouse:inventory' %}">
+                        <a href="#">
                             <i class="fas fa-box-open"></i>
                             Inventory
                         </a>
@@ -119,9 +101,7 @@
                             <i class="fas fa-clipboard-list"></i>
                             User Logs
                         </a>
-
-                        <!-- <a class="navbar-link" href="{% url 'user:register' %}">Register</a> -->
-                        <a href="{% url 'user:register' %}">
+                        <a href="#">
                             <i class="fas fa-address-card"></i>
                             Add User
                         </a>
@@ -137,13 +117,6 @@
                         <a href="#">
                             <i class="fas fa-paper-plane"></i>
                             Contact
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{% url 'logout' %}">
-                            <i class="fas fa-sign-out-alt"></i>
-                            Logout
                         </a>
                     </li>
                 </ul>
