@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %} Sold Item {% endblock %}
+
+
+{% block head %}
+    <style>
+        .row {
+            margin-bottom: 10px;
+        }
+
+        .card-body {
+            padding:10px;
+        }
+
+        .sortable {  cursor: pointer;}
+        .st-sort-ascent i,.st-sort-descent i {  padding-right: 3px;}
+        .st-sort-ascent i:before {  content: '\25B2';}
+        .st-sort-descent i:before {  content: '\25BC';}
+
+    </style>
+
+    <script>
+        $("document").ready(function(){
+        });
+    </script>
+{% endblock %}
+
+
+{% block body %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-3">
+            &nbsp;&nbsp;Week#
+            <input type="number" class="form-control" min="1" max="52" placeholder="week number">
+        </div>
+        <div class="col-lg-2">
+            &nbsp;&nbsp;Year
+            <select class="form-control">
+                <option value="2011">2011</option>
+                <option value="2010">2010</option>
+            </select>
+        </div>
+        <div class="col-lg-3">
+            &nbsp;&nbsp;Date
+            <div class="card">
+                <div class="card-body">
+                    yyyy/mm/dd - yyyy/mm/dd
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            &nbsp;&nbsp;&nbsp;
+            <button class="btn btn-success" style="display:block;">submit</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
