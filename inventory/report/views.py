@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .forms import WeeklyReportForm
 
-# Create your views here.
+
+def weeklyReport(request):
+    context={
+        'reportForm': WeeklyReportForm(),
+    }
+    return render(request, 'weekly_report.html', context)

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %} Sold Item {% endblock %}
+
+
+{% block head %}
+    <style>
+        .row {
+            margin-bottom: 10px;
+        }
+
+        .card-body {
+            padding:10px;
+        }
+    </style>
+
+    <script>
+        $("document").ready(function(){
+
+        });
+    </script>
+{% endblock %}
+
+
+{% block body %}
+
+<div class="container-fluid">
+    <div class="row" style="font-size:30px;margin-bottom:20px;">
+        Weekly Report
+    </div>
+
+    <!-- INPUTS -->
+    <div class="row">
+        <div class="col-lg-3">
+            Week Number
+            <input id="weekNumberSelect" type="number" class="form-control" min=1 max=52/>
+        </div>
+        <div class="col-lg-2">
+            Year
+            <select id="yearSelect" class="form-control">
+                <!-- QUERY THE YEAR OF THE FIRST TRANSACTION up to the CURRENT YEAR -->
+                <!-- Pls use the WeeklyReportForm class in forms.py in report(folder) -->
+                <option value="">2011</option>
+                <option value="">2012</option>
+                <option value="">2013</option>
+                <option value="">2014</option>
+                <option value="">2015</option>
+            </select>
+        </div>
+
+    </div>
+
+</div>
+    
+
+{% endblock %}

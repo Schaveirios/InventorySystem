@@ -11,5 +11,3 @@ class PurchaseForm(forms.Form):
 
     def __str__(self):
         return "Sold Item"
-
-    
