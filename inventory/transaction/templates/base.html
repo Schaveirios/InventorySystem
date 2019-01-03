@@ -102,13 +102,13 @@
                         </a>
                         <ul class="collapse list-unstyled" id="pageSubmenu">
                             <li>
-                                <a href="#">Daily Report</a>
+                                <a href="{% url 'report:weekly_report' %}">Weekly Report</a>
                             </li>
                             <li>
-                                <a href="#">Monthly Report</a>
+                                <a href="{% url 'report:monthly_report' %}">Monthly Report</a>
                             </li>
                             <li>
-                                <a href="#">Annual Report</a>
+                                <a href="{% url 'report:yearly_report' %}">Annual Report</a>
                             </li>
                         </ul>
                         <a href="{% url 'warehouse:inventory' %}">
