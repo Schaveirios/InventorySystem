@@ -5,6 +5,7 @@ from django.utils import timezone
 from .models import ImportedStocks, Item, Transaction, PurchasedItem, ReturnedItem
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from user.views import log_activity
 
 @login_required
 def sold_item(request):
@@ -58,7 +59,8 @@ def sold_item(request):
 
                 sold.save()
 
-            messages.success(request, "Sold Item")
+                log_activity(request,"Sold "+str(sold.quantity)+" "+sold.item.name, transaction.entryDate)
+                messages.success(request, "Sold Item")
             return redirect("/transaction/sold")
         else:
             messages.warning(request, "Invalid Input: "+str(formset.errors))
@@ -137,10 +139,12 @@ def return_item(request):
                 'return_form':ReturnForm(),
             }
 
+            log_activity(request,"Returned "+str(return_item.quantity)+" "+return_item.purchasedItem.item.name, transaction.entryDate)
+            messages.success(request, "Item returned")
+            # redirect("/transaction/return")
             return render(request, 'return_item.html', context)
 
-            messages.success(request, "Item returned")
-            redirect("/transaction/return")
+
             
         else:
             messages.warning(request, "Invalid Input")

@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
+from .models import UserActivity
 
 def index(request):
     return render(request,'login/login.html')
@@ -68,3 +68,19 @@ def user_login(request):
             return render(request, 'login/login.html', {})
     else:
         return render(request, 'login/login.html', {})
+
+
+def userlogs(request):
+    context={
+        'logs':UserActivity.objects.all()
+    }
+    return render(request, "user_logs.html", context)
+
+def log_activity(request, activity, date):
+    user_act = UserActivity(
+        username=request.user.username,
+        activity=activity,
+        date=date
+    )
+    user_act.save()
+    return
