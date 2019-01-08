@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} Weekly Report {% endblock %}
+{% block title %} Annual Report {% endblock %}
 
 
 {% block head %}
@@ -29,9 +29,9 @@
             // Global Options:
             Chart.defaults.global.defaultFontColor = 'black';
             Chart.defaults.global.defaultFontSize = 16;
-            
+
             var data = {
-            labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"],
             datasets: [{
                 label: "Sales",
                 fill: false,
@@ -52,7 +52,7 @@
                 pointRadius: 4,
                 pointHitRadius: 10,
 
-                data: {{daily_sales}},
+                data: {{annual_sales}},
                 spanGaps: true,
                 }, 
             ]
@@ -67,7 +67,7 @@
                             },
                             scaleLabel: {
                                 display: true,
-                                labelString: '{{DateDisplayed}}',
+                                labelString: '{{YearDisplayed}}',
                                 fontSize: 20 
                             }
                         }]            
@@ -80,7 +80,6 @@
             data: data,
             options: options
             });
-        
         });
     </script>
 
@@ -98,25 +97,21 @@
 
 <div class="container-fluid">
     <div class="row" style="font-size:30px;margin-bottom:20px;">
-        Weekly Report
+        Annual Report
     </div>
 
-    <form action="{% url 'report:weekly_report' %}" method="POST">
     <!-- INPUTS -->
+    <form action="{% url 'report:annual_report' %}" method="POST">
         {% csrf_token %}
         <div class="row">
-            <div class="col-lg-3">
-                Week Number
-                {{WeeklyReportForm.weekNumber}}
-            </div>
             <div class="col-lg-2">
                 Year
-                {{WeeklyReportForm.year}}
+                {{ AnnualReportForm.year }}
             </div>
             <div class="col-lg-2">
                 &nbsp;
                 <input style="display:block;" type="submit" class="btn btn-success"/>
-            </div>
+            </div>  
         </div>
     </form>
 

@@ -5,6 +5,7 @@ from django.utils import timezone
 from .models import ImportedStocks, Item, Transaction, PurchasedItem, ReturnedItem
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from user.views import log_activity
 
 @login_required
 def sold_item(request):
@@ -58,6 +59,7 @@ def sold_item(request):
 
                 sold.save()
 
+            log_activity(request,"Sold "+str(sold.quantity)+" "+sold.item.name, transaction.entryDate)
             messages.success(request, "Sold Item")
             return redirect("/transaction/sold")
         else:
@@ -137,10 +139,10 @@ def return_item(request):
                 'return_form':ReturnForm(),
             }
 
-            return render(request, 'return_item.html', context)
-
+            log_activity(request,"Returned "+str(return_item.quantity)+" "+return_item.purchasedItem.item.name, transaction.entryDate)
             messages.success(request, "Item returned")
-            redirect("/transaction/return")
+            # redirect("/transaction/return")
+            return render(request, 'return_item.html', context)
             
         else:
             messages.warning(request, "Invalid Input")
@@ -155,10 +157,9 @@ def search_purchase(request):
         form = SearchPurchaseForm(request.POST)
         if form.is_valid():
             search = form.cleaned_data
-            date = search.get("date")
             documentNumber = search.get("documentNumber")
 
-            transactions = PurchasedItem.objects.filter(date=date, documentNumber=documentNumber)
+            transactions = PurchasedItem.objects.filter(documentNumber=documentNumber)
             
             if(len(transactions)==0):
                 messages.warning(request, "Transaction Does Not Exist")

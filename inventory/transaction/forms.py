@@ -14,7 +14,6 @@ class PurchaseForm(forms.Form):
 
     
 class SearchPurchaseForm(forms.Form):
-    date = forms.DateField(widget=forms.DateInput(attrs={'class':'form-control', 'type':'date'}))
     documentNumber = forms.IntegerField(min_value=1, widget=forms.NumberInput(attrs={'class':'form-control'}))
 
 

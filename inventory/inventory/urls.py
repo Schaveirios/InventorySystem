@@ -7,9 +7,9 @@ urlpatterns = [
     path('',views.index,name='index'),
     path('register',views.register,name='register'),
     url(r'^special/',views.special,name='special'),
-    path('user',include('user.urls')),
+    path('user/',include('user.urls')),
     path('warehouse/',include('warehouse.urls')),
     path('logout', views.user_logout, name='logout'),
-    path('transaction',include('transaction.urls')),
+    path('transaction/',include('transaction.urls')),
     path('report/', include('report.urls')),
 ]

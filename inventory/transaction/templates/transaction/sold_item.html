@@ -88,7 +88,7 @@
                 }
 
                 cart_filled.push(cart_no);
-                alert(cart_filled)
+                // alert(cart_filled)
                 $("#id_purchase-"+cart_no+"-itemName").val(name);
                 $("#id_purchase-"+cart_no+"-brand").val(brand);
                 $("#id_purchase-"+cart_no+"-quantity").val(qty);
@@ -106,7 +106,7 @@
                     cart_filled = cart_filled.filter(function(item) { 
                         return item !== parseInt(myid)
                     })
-                    alert(cart_filled)
+                    // alert(cart_filled)
 
                     $("#id_purchase-"+myid+"-itemName").val(undefined);
                     $("#id_purchase-"+myid+"-brand").val(undefined);
@@ -137,10 +137,10 @@
                 var or_soldTo = $("#or_soldTo").val()
 
                 if(or_date=="" || or_docNum=="" || or_soldTo==""){
-                    alert("INVALID OR DETAILS");
+                    alert("INVALID RECEIPT DETAILS");
                     return
                 }
-                alert(cart_filled)
+                // alert(cart_filled)
                 for(var form_id=0; form_id<cart_no; form_id++){
                     $("#id_purchase-"+cart_filled[form_id]+"-date").val(or_date);
                     $("#id_purchase-"+cart_filled[form_id]+"-documentNumber").val(or_docNum);

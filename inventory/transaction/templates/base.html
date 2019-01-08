@@ -71,22 +71,13 @@
     
                 <ul class="list-unstyled components">
                     <li class="active">
-                        <a href="#homeSubmenu" aria-expanded="false">
+                        <a href="{% url 'transact:sold_item' %}" aria-expanded="false">
                             <i class="fas fa-home"></i>
                             Home
                         </a>
-                        <!-- <ul class="collapse list-unstyled" id="homeSubmenu">
-                            <li>
-                                <a href="#">Home 1</a>
-                            </li>
-                            <li>
-                                <a href="#">Home 2</a>
-                            </li>
-                            <li>
-                                <a href="#">Home 3</a>
-                            </li>
-                        </ul> -->
+
                     </li>
+
                     <li>
                         <a href="{% url 'transact:sold_item' %}">
                             <i class="fas fa-plus-square"></i>
@@ -102,32 +93,30 @@
                         </a>
                         <ul class="collapse list-unstyled" id="pageSubmenu">
                             <li>
-                                <a href="#">Daily Report</a>
+                                <a href="{% url 'report:weekly_report' %}">Weekly Report</a>
                             </li>
                             <li>
-                                <a href="#">Monthly Report</a>
+                                <a href="{% url 'report:monthly_report' %}">Monthly Report</a>
                             </li>
                             <li>
-                                <a href="#">Annual Report</a>
+                                <a href="{% url 'report:annual_report' %}">Annual Report</a>
                             </li>
                         </ul>
                         <a href="{% url 'warehouse:inventory' %}">
                             <i class="fas fa-box-open"></i>
                             Inventory
                         </a>
-                        <a href="#">
+                        <a href="{% url 'user:userlogs' %}">
                             <i class="fas fa-clipboard-list"></i>
                             User Logs
                         </a>
-
-                        <!-- <a class="navbar-link" href="{% url 'user:register' %}">Register</a> -->
                         <a href="{% url 'user:register' %}">
                             <i class="fas fa-address-card"></i>
                             Add User
                         </a>
 
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="#">
                             <i class="fas fa-question"></i>
                             FAQ
@@ -138,7 +127,7 @@
                             <i class="fas fa-paper-plane"></i>
                             Contact
                         </a>
-                    </li>
+                    </li> -->
 
                     <li>
                         <a href="{% url 'logout' %}">
@@ -174,7 +163,7 @@
     
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="nav navbar-nav ml-auto">
-                                <li class="nav-item active">
+                                <!-- <li class="nav-item active">
                                     <a class="nav-link" href="#">Page</a>
                                 </li>
                                 <li class="nav-item">
@@ -185,7 +174,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Page</a>
-                                </li>
+                                </li> -->
                             </ul>
                         </div>
                     </div>
@@ -229,6 +218,13 @@
                     $('#sidebar').toggleClass('active');
                 });
             });
+            
+            $(function() {
+                $('#notification').delay(500).fadeIn('normal', function() {
+                    $(this).delay(1000).fadeOut();
+                });
+            });
+
         </script>
     </body>
 </html>

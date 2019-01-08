@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} Sold Item {% endblock %}
+{% block title %} Inventory {% endblock %}
 
 
 {% block head %}
@@ -50,6 +50,7 @@
                 $("#item_distributor").val(distributor);      
             });
         });
+        {% load warehouse_filters %}
     </script>
 {% endblock %}
 
@@ -95,7 +96,11 @@
 
                 <tbody>
                     {% for item in Items %}
-                    <tr>
+                    {% if item|low_quantity %}
+                        <tr style="color:red;">
+                    {% else %}
+                        <tr>
+                    {% endif %}
                         <td>{{item.name}}</td>
                         <td>{{item.brand}}</td>
                         <td>{{item.quantityLeft}}</td>

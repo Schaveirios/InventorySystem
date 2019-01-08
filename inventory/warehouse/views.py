@@ -5,6 +5,9 @@ from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+from user.views import log_activity 
+
+
 @login_required
 def warehouse(request):
     
@@ -48,7 +51,9 @@ def warehouse(request):
             )
 
             stock.save()
-
+            
+            log_activity(request,"Added "+str(stock.quantity)+" "+item.name, transaction.entryDate)
+            
             messages.success(request, "STOCKS ADDED")
         else:
             messages.warning(request, "INVALID INPUT")
@@ -93,6 +98,7 @@ def add_item(request):
             )
 
             item.save()
+            log_activity(request,"Added new item, "+item.name, timezone.now())
 
             messages.success(request, "NEW ITEM ADDED")
         else:
