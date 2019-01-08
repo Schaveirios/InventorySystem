@@ -81,15 +81,15 @@
                     <li>
                         <a href="{% url 'transact:sold_item' %}">
                             <i class="fas fa-plus-square"></i>
-                            Sell Item
+                            <span class="sidebar_label">Sell Item</span>
                         </a>
                         <a href="{% url 'transact:return_item' %}">
                             <i class="fas fa-cart-arrow-down"></i>
-                            Return Item
+                            <span class="sidebar_label">Return Item</span>
                         </a>
-                        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="padding-left:15%;">
                             <i class="fas fa-copy"></i>
-                            Report
+                            <span class="sidebar_label">Report</span>
                         </a>
                         <ul class="collapse list-unstyled" id="pageSubmenu">
                             <li>
@@ -104,15 +104,15 @@
                         </ul>
                         <a href="{% url 'warehouse:inventory' %}">
                             <i class="fas fa-box-open"></i>
-                            Inventory
+                            <span class="sidebar_label">Inventory</span>
                         </a>
                         <a href="{% url 'user:userlogs' %}">
                             <i class="fas fa-clipboard-list"></i>
-                            User Logs
+                            <span class="sidebar_label">User Logs</span>
                         </a>
                         <a href="{% url 'user:register' %}">
                             <i class="fas fa-address-card"></i>
-                            Add User
+                            <span class="sidebar_label">Add User</span>
                         </a>
 
                     </li>
@@ -132,7 +132,7 @@
                     <li>
                         <a href="{% url 'logout' %}">
                             <i class="fas fa-sign-out-alt"></i>
-                            Logout
+                            <span class="sidebar_label">Logout</span>
                         </a>
                     </li>
                 </ul>
@@ -214,8 +214,17 @@
 
         <script type="text/javascript">
             $(document).ready(function () {
+                var duck=0;
                 $('#sidebarCollapse').on('click', function () {
                     $('#sidebar').toggleClass('active');
+                    if(duck==0){
+                        $(".sidebar_label").css("visibility","hidden");
+                        duck=1;
+                    }else{
+                        $(".sidebar_label").css("visibility","visible");
+                        duck=0;
+                    }
+
                 });
             });
             
