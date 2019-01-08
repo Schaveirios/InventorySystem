@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} Monthly Report {% endblock %}
+{% block title %} Weekly Report {% endblock %}
 
 
 {% block head %}
@@ -29,7 +29,7 @@
             // Global Options:
             Chart.defaults.global.defaultFontColor = 'black';
             Chart.defaults.global.defaultFontSize = 16;
-
+            
             var data = {
             labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
             datasets: [{
@@ -52,7 +52,7 @@
                 pointRadius: 4,
                 pointHitRadius: 10,
 
-                data: [65, 59, 80, 81, 56, 55, 40],
+                data: {{daily_sales}},
                 spanGaps: true,
                 }, 
             ]
@@ -67,7 +67,7 @@
                             },
                             scaleLabel: {
                                 display: true,
-                                labelString: '',
+                                labelString: '{{DateDisplayed}}',
                                 fontSize: 20 
                             }
                         }]            
@@ -80,6 +80,7 @@
             data: data,
             options: options
             });
+        
         });
     </script>
 
@@ -100,29 +101,24 @@
         Weekly Report
     </div>
 
+    <form action="{% url 'report:weekly_report' %}" method="POST">
     <!-- INPUTS -->
-    <div class="row">
-        <div class="col-lg-3">
-            Week Number
-            <input id="weekNumberSelect" type="number" class="form-control" min=1 max=52/>
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-lg-3">
+                Week Number
+                {{WeeklyReportForm.weekNumber}}
+            </div>
+            <div class="col-lg-2">
+                Year
+                {{WeeklyReportForm.year}}
+            </div>
+            <div class="col-lg-2">
+                &nbsp;
+                <input style="display:block;" type="submit" class="btn btn-success"/>
+            </div>
         </div>
-        <div class="col-lg-2">
-            Year
-            <select id="yearSelect" class="form-control">
-                <!-- QUERY THE YEAR OF THE FIRST TRANSACTION up to the CURRENT YEAR -->
-                <!-- Pls use the WeeklyReportForm class in forms.py in report(folder) -->
-                <option value="">2011</option>
-                <option value="">2012</option>
-                <option value="">2013</option>
-                <option value="">2014</option>
-                <option value="">2015</option>
-            </select>
-        </div>
-        <div class="col-lg-2">
-            &nbsp;
-            <input style="display:block;" type="submit" class="btn btn-success"/>
-        </div>
-    </div>
+    </form>
 
     <!-- GRAPH -->
     <div class="row">

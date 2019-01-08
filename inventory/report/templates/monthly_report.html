@@ -25,13 +25,17 @@
         $("document").ready(function(){
             var canvas = document.getElementById("lineGraph");
             var ctx = canvas.getContext('2d');
-
+            
             // Global Options:
             Chart.defaults.global.defaultFontColor = 'black';
             Chart.defaults.global.defaultFontSize = 16;
-
+            
+            var mylabel=[];
+            //{% for day in month_days %}
+                mylabel.push("{{day}}");
+            //{% endfor %}
             var data = {
-            labels: ["Jan 1", "Jan 2", "Jan 3", "Jan 4", "Jan 5", "Jan 6", "Jan 7", "Jan 8", "Jan 9", "Jan 10",],
+            labels: mylabel,
             datasets: [{
                 label: "Sales",
                 fill: false,
@@ -52,7 +56,7 @@
                 pointRadius: 4,
                 pointHitRadius: 10,
 
-                data: [65, 59, 80, 81, 56, 55, 40,60,55,30],
+                data: {{monthly_sales}},
                 spanGaps: true,
                 }, 
             ]
@@ -67,7 +71,7 @@
                             },
                             scaleLabel: {
                                 display: true,
-                                labelString: '',
+                                labelString: '{{YearDisplayed}}',
                                 fontSize: 20 
                             }
                         }]            
@@ -101,34 +105,16 @@
     </div>
 
     <!-- INPUTS -->
-    <form>
+    <form action="{% url 'report:monthly_report' %}" method="POST">
+        {% csrf_token %}
         <div class="row">
                 <div class="col-lg-4">
                     Month
-                    <select id="monthSelect" class="form-control">
-                        <option value="January">January</option>
-                        <option value="February">February</option>
-                        <option value="March">March</option>
-                        <option value="April">April</option>
-                        <option value="May">May</option>
-                        <option value="June">June</option>
-                        <option value="July">July</option>
-                        <option value="August">August</option>
-                        <option value="September">September</option>
-                        <option value="October">October</option>
-                        <option value="November">November</option>
-                        <option value="December">December</option>
-                    </select>
+                    {{ MonthlyReportForm.month }}
                 </div>
                 <div class="col-lg-4">
                     Year
-                    <select id="yearSelect" class="form-control">
-                        <option value="">2011</option>
-                        <option value="">2012</option>
-                        <option value="">2013</option>
-                        <option value="">2014</option>
-                        <option value="">2015</option>
-                    </select>
+                    {{ MonthlyReportForm.year }}
                 </div>
                 <div class="col-lg-2">
                     &nbsp;

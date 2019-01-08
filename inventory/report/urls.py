@@ -10,5 +10,5 @@ urlpatterns = [
     # url(r'^registerUser$', views.register_user, name='register_user')
     path('weekly', views.weeklyReport, name='weekly_report'),
     path('monthly', views.monthlyReport, name='monthly_report'),
-    path('yearly', views.yearlyReport, name='yearly_report'),
+    path('annual', views.yearlyReport, name='annual_report'),
 ]
