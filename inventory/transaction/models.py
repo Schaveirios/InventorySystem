@@ -6,7 +6,7 @@ class Item(models.Model):
     brand = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     retailPrice = models.DecimalField(max_digits=10, decimal_places=2)
-    quantityLeft = models.DecimalField(max_digits=10, decimal_places=2)
+    quantityLeft = models.PositiveIntegerField()
     unit = models.CharField(max_length=100)
 
     def __str__(self):
@@ -25,7 +25,7 @@ class PurchasedItem(models.Model):
     date = models.DateField("Document Date")
     item = models.ForeignKey(Item, on_delete=models.PROTECT)
     documentNumber = models.PositiveIntegerField()
-    quantity = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.PositiveIntegerField()
     soldTo = models.CharField(max_length=100)
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
 
@@ -38,7 +38,7 @@ class ReturnedItem(models.Model):
     dateReturned = models.DateField("Date Returned")
     condition = models.CharField(max_length=10)
     remark = models.TextField()
-    quantity = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.PositiveIntegerField()
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -47,7 +47,7 @@ class ReturnedItem(models.Model):
 
 class DefectiveItem(models.Model):
     date = models.DateTimeField("Entry Date")
-    quantity = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.PositiveIntegerField()
     item = models.ForeignKey(Item, on_delete=models.PROTECT)
 
     def __str__(self):
@@ -58,7 +58,7 @@ class ImportedStocks(models.Model):
     date = models.DateField("Document Date")
     item = models.ForeignKey(Item, on_delete=models.PROTECT)
     documentNumber = models.PositiveIntegerField()
-    quantity = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.PositiveIntegerField()
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
 
     def __str__(self):

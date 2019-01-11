@@ -6,7 +6,7 @@ class PurchaseForm(forms.Form):
     itemName = forms.CharField(max_length=100)
     brand = forms.CharField(max_length=100)
     documentNumber = forms.IntegerField(min_value=1)
-    quantity = forms.DecimalField(max_digits=10, decimal_places=2)
+    quantity = forms.IntegerField(min_value=1)
     soldTo = forms.CharField(max_length=100)
 
     def __str__(self):
@@ -24,7 +24,7 @@ class ReturnForm(forms.Form):
         ], widget=forms.Select(attrs={"class":"form-control"}))
     dateReturned = forms.DateField(widget=forms.DateInput(attrs={'class':'form-control', 'type':'date'}))
     remark = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control'}))
-    quantity = forms.DecimalField(max_digits=10, decimal_places=2, widget=forms.NumberInput(attrs={"class":"form-control"}))
+    quantity = forms.IntegerField(min_value=1, widget=forms.NumberInput(attrs={"class":"form-control"}))
     purchaseId = forms.IntegerField(min_value=1, widget=forms.NumberInput(attrs={'style':'visibility:hidden;position:absolute;','id':'purchaseId'}))
     
     def __str__(self):
